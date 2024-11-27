@@ -1,7 +1,7 @@
 import { ReactNode, useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import { Navigate, useLocation, Location } from "react-router-dom";
-import Loading from "@/components/Loading/Loading";
+import Loading from "../components/Loading/Loading";
 
 interface PrivateRoutesProps {
   children: ReactNode;
@@ -9,6 +9,7 @@ interface PrivateRoutesProps {
 
 const PrivateRoutes = ({ children }: PrivateRoutesProps) => {
   const { user, loading } = useContext(AuthContext);
+  //@ts-nocheck
   const location: Location = useLocation();
 
   if (loading) {
