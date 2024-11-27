@@ -155,18 +155,6 @@ const RegisterUser = () => {
                     <p className="text-red-500">{errors.password.message}</p>
                   )}
                 </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="secret_pass">Secret Pass</Label>
-                  <Input
-                    type="password"
-                    id="secret_pass"
-                    placeholder="******"
-                    {...register("secret_pass")}
-                  />
-                  {errors.secret_pass && (
-                    <p className="text-red-500">{errors.secret_pass.message}</p>
-                  )}
-                </div>
 
                 <Button type="submit">
                   {loading ? "Registering..." : "Register"}
