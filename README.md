@@ -6,7 +6,7 @@ This project implements a **highly available, containerized To-Do application** 
 
 The application consists of two main components:
 1. **Frontend**: A React.js application that interacts with the backend API to manage To-Do tasks.
-2. **Backend**: A Node.js + Express application that exposes a REST API for managing tasks, using PostgreSQL as the database.
+2. **Backend**: A Node.js + Express application that exposes a REST API for managing tasks, using MongoDB as the database.
 
 The architecture includes:
 - **Docker containers** for both the frontend and backend, ensuring consistency across environments.
@@ -26,6 +26,4 @@ Before deploying the application, ensure you have the following:
 - **AWS CLI** installed and configured with your credentials.
 - A **Docker Hub account** to push your Docker images for accessibility.
 - **Node.js** and **React.js** setup for the frontend and backend applications.
-
-## Directory Structure
 
