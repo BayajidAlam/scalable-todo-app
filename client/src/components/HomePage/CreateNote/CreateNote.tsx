@@ -6,7 +6,7 @@ const CreateNoteCard = () => {
   const [title, setTitle] = useState("");
 
   return (
-    <div className="w-[700px] shadow-2xl p-4 rounded-xl mx-auto">
+    <div className="lg:w-[600px] shadow-2xl p-4 rounded-xl mx-auto">
       {isClick && (
         <input
           type="text"

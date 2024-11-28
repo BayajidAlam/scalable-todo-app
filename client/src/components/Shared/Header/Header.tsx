@@ -3,11 +3,12 @@ import { BsViewStacked } from "react-icons/bs";
 import { Avatar } from "../../ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
-interface HeaderProps {
-  toggleSideBar: () => void;
-}
+import { BsGrid } from "react-icons/bs";
+import { useAppContext } from "../../../providers/AppProvider";
 
-const Header: React.FC<HeaderProps> = ({ toggleSideBar }) => {
+const Header = () => {
+  const { toggleSideBar, isListView, toggleListView } = useAppContext();
+
   return (
     <header className="flex items-center justify-between px-4 py-2 bg-white shadow-md">
       <div className="flex items-center gap-4">
@@ -36,8 +37,11 @@ const Header: React.FC<HeaderProps> = ({ toggleSideBar }) => {
         <button className="p-2 rounded hover:bg-gray-100">
           <FiRefreshCcw size={20} />
         </button>
-        <button className="p-2 rounded hover:bg-gray-100">
-          <BsViewStacked size={20} />
+        <button
+          onClick={() => toggleListView()}
+          className="p-2 rounded hover:bg-gray-100"
+        >
+          {isListView ? <BsGrid size={20} /> : <BsViewStacked size={20} />}
         </button>
         <button className="p-2 rounded hover:bg-gray-100">
           <FiSettings size={20} />

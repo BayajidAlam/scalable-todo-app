@@ -32,7 +32,7 @@ const SideBar = ({ isSideBarExpanded }: { isSideBarExpanded: boolean }) => {
             className={({ isActive }) =>
               `flex justify-start items-center p-2 w-full hover:bg-indigo-100 hover:rounded-r-3xl ${
                 isActive
-                  ? "bg-[#c7d2fe] rounded-r-3xl text-black font-semibold"
+                  ? `bg-[#c7d2fe] rounded-r-3xl text-black font-semibold`
                   : ""
               }`
             }
