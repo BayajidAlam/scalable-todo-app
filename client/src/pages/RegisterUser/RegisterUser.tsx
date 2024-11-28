@@ -42,7 +42,7 @@ const RegisterUser = () => {
       console.log(userInfo,'user info')
       createUser(data.email, data.password)
         .then((_result: any) => {
-          fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
+          fetch(`${import.meta.env.VITE_API_URL}/users`, {
             method: "POST",
             headers: {
               "content-type": "application/json",
