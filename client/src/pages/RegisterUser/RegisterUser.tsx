@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -37,13 +38,11 @@ const RegisterUser = () => {
         name: data.name,
         email: data.email,
         password: data.password,
-        secret_pass: data.secret_pass,
-        role: "user",
       };
-
+      console.log(userInfo,'user info')
       createUser(data.email, data.password)
         .then((_result: any) => {
-          fetch(`${import.meta.env.VITE_API_URL}/users`, {
+          fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
             method: "POST",
             headers: {
               "content-type": "application/json",
@@ -162,9 +161,9 @@ const RegisterUser = () => {
               </div>
             </form>
             <p className="my-2 text-center">
-              Already have an account?
+              
               <Link className="font-semibold" to="/login">
-                Login
+              Already have an account? 
               </Link>
             </p>
           </Form>

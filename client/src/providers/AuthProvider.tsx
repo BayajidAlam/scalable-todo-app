@@ -11,8 +11,8 @@ import {
   User,
   UserCredential,
 } from "firebase/auth";
-import { app } from "../firebase/firebase.config";
 import axios from "axios";
+import { app } from "../firebase/firebase.config";
 
 interface AuthContextProps {
   user: User | null;
@@ -58,8 +58,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // reauthenticate the user
     const credential = EmailAuthProvider.credential(
-      // @ts-ignore
-      user.email,
+      user.email as string,
       currentPassword
     );
     await reauthenticateWithCredential(user, credential);
