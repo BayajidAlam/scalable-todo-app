@@ -1,10 +1,11 @@
+import CreateNoteCard from "../../components/HomePage/CreateNote/CreateNote";
 
-const HomePage = () => {
+const Home = () => {
   return (
-    <div>
- 
+    <div className="w-full">
+      <CreateNoteCard />
     </div>
   );
 };
 
-export default HomePage;
+export default Home;

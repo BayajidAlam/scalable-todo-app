@@ -11,12 +11,12 @@ const items = [
   },
   {
     name: "Archive",
-    link: "/tasks",
+    link: "/archive",
     icon: <HiOutlineArchiveBoxArrowDown />,
   },
   {
     name: "Trash",
-    link: "/settings",
+    link: "/trash",
     icon: <GoTrash />,
   },
 ];

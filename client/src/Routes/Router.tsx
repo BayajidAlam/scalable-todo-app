@@ -4,6 +4,8 @@ import PrivateRoutes from "./PrivateRoutes";
 import HomePage from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import RegisterUser from "../pages/RegisterUser/RegisterUser";
+import TrashPage from "../pages/Trash/TrashPage";
+import ArchivePage from "../pages/Archive/ArchivePage";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +19,14 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/archive",
+        element: <ArchivePage />,
+      },
+      {
+        path: "/trash",
+        element: <TrashPage />,
       },
     ],
   },
