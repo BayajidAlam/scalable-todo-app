@@ -74,6 +74,7 @@ async function run() {
     await client.connect();
     const db = client.db("scalable_todo");
     const usersCollection = db.collection("users");
+    const notesCollection = db.collection("notes");
 
     //********************* health apis ************************//
     //base api
@@ -206,6 +207,225 @@ async function run() {
     });
 
     //********************* users apis ************************//
+
+    //********************* notes apis ************************//
+    // create a note
+    app.post("/notes", async (req, res) => {
+      const { title, content, isArchived, isTrashed,isTodo, todos } = req.body;
+      const email = req.query.email;
+      const user = await usersCollection.findOne({ email });
+
+      if (!user) {
+        return res.status(404).send({
+          error: true,
+          message: "User not found",
+        });
+      }
+      
+      const note = {
+        title,
+        content,
+        isArchived,
+        isTrashed,
+        email: email,
+        isTodo,
+        todos: isTodo ? todos : [],
+        createdAt: new Date(),
+      };
+
+      const result = await notesCollection.insertOne(note);
+      res.send(result);
+    });
+
+    //get all notes with search and sorting
+    app.get("/notes", async (req, res) => {
+      try {
+        const { email, searchTerm, isArchived, isTrashed } = req.query;
+
+        if (!email) {
+          return res.status(400).send({
+            error: true,
+            message: "Email parameter is required",
+          });
+        }
+
+        let query = { email };
+
+        // Add archive/trash filters if provided
+        if (isArchived !== undefined) {
+          query.isArchived = isArchived === "true";
+        }
+
+        if (isTrashed !== undefined) {
+          query.isTrashed = isTrashed === "true";
+        }
+
+        // Add search if provided
+        if (searchTerm) {
+          query = {
+            ...query,
+            $or: [
+              { title: { $regex: searchTerm, $options: "i" } },
+              { content: { $regex: searchTerm, $options: "i" } },
+            ],
+          };
+        }
+
+        const notes = await notesCollection
+          .find(query)
+          .sort({ createdAt: -1 })
+          .toArray();
+
+        res.send(notes);
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+        res.status(500).send({
+          error: true,
+          message: "Error fetching notes",
+        });
+      }
+    });
+
+    // Update note
+    // Update note
+    app.patch("/notes/:id", async (req, res) => {
+      try {
+        const { id } = req.params;
+        const { isArchived, isTrashed, title, content, todos, isTodo } =
+          req.body;
+        const email = req.query.email;
+
+        // Validate email
+        if (!email) {
+          return res.status(400).send({
+            error: true,
+            message: "Email parameter is required",
+          });
+        }
+
+        // Validate id
+        if (!ObjectId.isValid(id)) {
+          return res.status(400).send({
+            error: true,
+            message: "Invalid note ID",
+          });
+        }
+
+        // Check if note exists and belongs to user
+        const existingNote = await notesCollection.findOne({
+          _id: new ObjectId(id),
+          email,
+        });
+
+        if (!existingNote) {
+          return res.status(404).send({
+            error: true,
+            message: "Note not found",
+          });
+        }
+
+        const updateFields = {};
+
+        // Update status fields if provided
+        if (isArchived !== undefined) {
+          updateFields.isArchived = isArchived;
+        }
+        if (isTrashed !== undefined) {
+          updateFields.isTrashed = isTrashed;
+        }
+
+        // Update todo status if provided
+        if (isTodo !== undefined) {
+          updateFields.isTodo = isTodo;
+        }
+
+        // Update todos if provided
+        if (todos !== undefined) {
+          if (!Array.isArray(todos)) {
+            return res.status(400).send({
+              error: true,
+              message: "Todos must be an array",
+            });
+          }
+          // Validate todo items
+          const isValidTodos = todos.every(
+            (todo) =>
+              todo.id &&
+              typeof todo.text === "string" &&
+              typeof todo.isCompleted === "boolean"
+          );
+          if (!isValidTodos) {
+            return res.status(400).send({
+              error: true,
+              message: "Invalid todo items format",
+            });
+          }
+          updateFields.todos = todos;
+        }
+
+        // Update content fields if provided
+        if (title !== undefined) {
+          if (!title.trim()) {
+            return res.status(400).send({
+              error: true,
+              message: "Title cannot be empty",
+            });
+          }
+          updateFields.title = title;
+        }
+
+        if (content !== undefined) {
+          if (!content.trim()) {
+            return res.status(400).send({
+              error: true,
+              message: "Content cannot be empty",
+            });
+          }
+          updateFields.content = content;
+        }
+
+        // Update note
+        const result = await notesCollection.updateOne(
+          { _id: new ObjectId(id), email },
+          { $set: updateFields }
+        );
+
+        if (result.modifiedCount === 0) {
+          return res.status(400).send({
+            error: true,
+            message: "No changes made to note",
+          });
+        }
+
+        // Get updated note
+        const updatedNote = await notesCollection.findOne({
+          _id: new ObjectId(id),
+          email,
+        });
+
+        res.send({
+          success: true,
+          message: "Note updated successfully",
+          note: updatedNote,
+        });
+      } catch (error) {
+        console.error("Error updating note:", error);
+        res.status(500).send({
+          error: true,
+          message: "Error updating note",
+        });
+      }
+    });
+
+    // Get single note
+    app.get("/notes/:id", async (req, res) => {
+      const { id } = req.params;
+      const note = await notesCollection.findOne({
+        _id: new ObjectId(id),
+      });
+      res.send(note);
+    });
+    //********************* notes apis ************************//
   } finally {
   }
 }
