@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { RiInboxArchiveLine } from "react-icons/ri";
 import CreateNoteCard from "../../components/HomePage/CreateNote/CreateNote";
 import { GoTrash } from "react-icons/go";
 import { useAppContext } from "../../providers/AppProvider";
@@ -7,6 +6,9 @@ import ViewNotesModal from "../../components/Modal/Modal";
 import useFetchNotes from "../../hooks/useNotes";
 import useAuth from "../../hooks/useAuth";
 import { updateNoteStatus } from "../../utils/noteAction";
+import { Button } from "../../components/ui/button";
+import useDeleteNote from "../../hooks/useDeleteNote";
+import { AiFillDelete } from "react-icons/ai";
 
 const ArchivePage = () => {
   const { isListView } = useAppContext();
@@ -27,22 +29,14 @@ const ArchivePage = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedNote(null);
-  };
+  const { deleteNote, isLoading } = useDeleteNote({
+    email: user?.email,
+    onSuccess: refetch,
+  });
 
-  const handleArchive = async (e: React.MouseEvent, note: any) => {
+  const handleDelete = async (e: React.MouseEvent, noteId: string) => {
     e.stopPropagation();
-    const success = await updateNoteStatus({
-      noteId: note._id,
-      email: user?.email,
-      action: "archive",
-      currentStatus: note.isArchived,
-    });
-    if (success) {
-      refetch();
-    }
+    await deleteNote(noteId);
   };
 
   const handleTrash = async (e: React.MouseEvent, note: any) => {
@@ -107,18 +101,20 @@ const ArchivePage = () => {
               <p>{note.content}</p>
             )}
             <div className="flex justify-end items-center gap-3 mt-4">
-              <button
-                onClick={(e) => handleArchive(e, note)}
-                className="text-gray-500 hover:text-blue-500"
-              >
-                <RiInboxArchiveLine />
-              </button>
-              <button
+              <Button
+                variant={"outline"}
                 onClick={(e) => handleTrash(e, note)}
                 className="text-gray-500 hover:text-red-500"
               >
                 <GoTrash />
-              </button>
+              </Button>
+              <Button
+                variant={"outline"}
+                onClick={(e) => handleDelete(e, note._id)}
+                className=" hover:text-red-500 text-red-500"
+              >
+                <AiFillDelete />
+              </Button>
             </div>
           </div>
         ))}

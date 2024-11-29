@@ -9,15 +9,14 @@ import useAuth from "../../hooks/useAuth";
 import { updateNoteStatus } from "../../utils/noteAction";
 
 const Home = () => {
-  const { isListView } = useAppContext();
+  const { isListView, searchTerm } = useAppContext();
+  const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
 
-  const { user } = useAuth();
-
   const { notes, refetch } = useFetchNotes({
     email: user?.email,
-    searchTerm: "",
+    searchTerm,
     isTrashed: false,
     isArchived: false,
   });
@@ -25,11 +24,6 @@ const Home = () => {
   const openModal = (note) => {
     setSelectedNote(note);
     setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedNote(null);
   };
 
   const handleArchive = async (e: React.MouseEvent, note: any) => {

@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { RiInboxArchiveLine } from "react-icons/ri";
 import CreateNoteCard from "../../components/HomePage/CreateNote/CreateNote";
-import { GoTrash } from "react-icons/go";
 import { useAppContext } from "../../providers/AppProvider";
 import ViewNotesModal from "../../components/Modal/Modal";
 import useFetchNotes from "../../hooks/useNotes";
 import useAuth from "../../hooks/useAuth";
 import { updateNoteStatus } from "../../utils/noteAction";
+import { Button } from "../../components/ui/button";
+import useDeleteNote from "../../hooks/useDeleteNote";
+import { AiFillDelete } from "react-icons/ai";
 
 const TrashPage = () => {
   const { isListView } = useAppContext();
@@ -40,17 +42,14 @@ const TrashPage = () => {
     }
   };
 
-  const handleTrash = async (e: React.MouseEvent, note: any) => {
+  const { deleteNote, isLoading } = useDeleteNote({
+    email: user?.email,
+    onSuccess: refetch,
+  });
+
+  const handleDelete = async (e: React.MouseEvent, noteId: string) => {
     e.stopPropagation();
-    const success = await updateNoteStatus({
-      noteId: note._id,
-      email: user?.email,
-      action: "trash",
-      currentStatus: note.isTrashed,
-    });
-    if (success) {
-      refetch();
-    }
+    await deleteNote(noteId);
   };
 
   return (
@@ -102,18 +101,20 @@ const TrashPage = () => {
               <p>{note.content}</p>
             )}
             <div className="flex justify-end items-center gap-3 mt-4">
-              <button
+              <Button
+                variant={"outline"}
                 onClick={(e) => handleArchive(e, note)}
-                className="text-gray-500 hover:text-blue-500"
+                className=" hover:text-blue-500"
               >
                 <RiInboxArchiveLine />
-              </button>
-              <button
-                onClick={(e) => handleTrash(e, note)}
-                className="text-gray-500 hover:text-red-500"
+              </Button>
+              <Button
+                variant={"outline"}
+                onClick={(e) => handleDelete(e, note._id)}
+                className=" hover:text-red-500 text-red-500"
               >
-                <GoTrash />
-              </button>
+                <AiFillDelete />
+              </Button>
             </div>
           </div>
         ))}

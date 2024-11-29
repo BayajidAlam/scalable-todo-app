@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Bounce, toast } from "react-toastify";
 import { loginSchema } from "../../schemas/login";
 import {
   Card,
@@ -95,9 +94,9 @@ const Login = () => {
               </div>
             </form>
             <p className="my-2 text-center">
-              New to Mahlun
+              New to Neep?{" "} 
               <Link className="font-semibold" to="/registration">
-                ?Create account
+                Create account
               </Link>
             </p>
           </Form>

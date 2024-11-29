@@ -6,6 +6,8 @@ import Login from "../pages/Login/Login";
 import RegisterUser from "../pages/RegisterUser/RegisterUser";
 import TrashPage from "../pages/Trash/TrashPage";
 import ArchivePage from "../pages/Archive/ArchivePage";
+import { ChangePassword } from "../components/ChangePassword/ChangePassword";
+import WithoutSideBarLayout from "../Layout/WithoutSideBarLayout";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +29,20 @@ export const router = createBrowserRouter([
       {
         path: "/trash",
         element: <TrashPage />,
+      },
+    ],
+  },
+  {
+    path: "/user",
+    element: (
+      <PrivateRoutes>
+        <WithoutSideBarLayout />
+      </PrivateRoutes>
+    ),
+    children: [
+      {
+        path: "/user/change-password",
+        element: <ChangePassword />,
       },
     ],
   },
