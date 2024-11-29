@@ -5,12 +5,18 @@ import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Bounce, toast } from "react-toastify";
 import { loginSchema } from "../../schemas/login";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
 import { Form } from "../../components/ui/form";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { AuthContext } from "../../providers/AuthProvider";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 const Login = () => {
   // @ts-ignore
@@ -36,32 +42,12 @@ const Login = () => {
       logInUser(data.email, data.password)
         .then((result: any) => {
           if (result?.user?.email) {
-            toast.success("Successfully logged in!", {
-              position: "top-right",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-            });
+            showSuccessToast("Successfully logged in!");
             navigate(from, { replace: true });
           }
         })
         .catch((error: any) => {
-          toast.error(`${error?.message}`, {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
+          showErrorToast(error?.message);
         });
     } catch (error) {
       console.log(error, "error");

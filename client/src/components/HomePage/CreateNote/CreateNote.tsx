@@ -14,7 +14,7 @@ interface TodoItem {
   isCompleted: boolean;
 }
 
-const CreateNoteCard = () => {
+const CreateNoteCard = ({refetch}) => {
   const { user } = useContext(AuthContext);
 
   const [isClick, setIsClick] = useState(false);
@@ -83,6 +83,7 @@ const CreateNoteCard = () => {
 
       const data = await response.json();
       if (response.ok && data.insertedId) {
+        refetch();
         toast.success("Note created successfully!");
         setTitle("");
         setContent("");
