@@ -1,6 +1,5 @@
-import { useContext, useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bounce, toast } from "react-toastify";
 import {
   Card,
   CardContent,
@@ -11,19 +10,28 @@ import {
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { AuthContext } from "../../providers/AuthProvider";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import useAuth from "../../hooks/useAuth";
+
+interface PasswordChangeResponse {
+  error: boolean;
+  message: string;
+}
 
 export function ChangePassword() {
-  //@ts-ignore
-  const { changePassword, loading, user } = useContext(AuthContext);
+  const { changePassword, loading, user } = useAuth();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSavePassword = async () => {
+    if (!currentPassword || !newPassword) {
+      showErrorToast("Both passwords are required");
+      return;
+    }
+
     try {
-      fetch(
+      const response = await fetch(
         `${import.meta.env.VITE_API_URL}/change-password?email=${user?.email}`,
         {
           method: "POST",
@@ -32,23 +40,24 @@ export function ChangePassword() {
           },
           body: JSON.stringify({ currentPassword, newPassword }),
         }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          if (!data.error) {
-            changePassword(currentPassword, newPassword)
-              .then((_res: any) => {
-                navigate("/");
-                showSuccessToast(`${data.message}`);
-              })
-              .catch((error: any) => {
-                console.log(error);
-              });
-          } else {
-            showErrorToast(`${data.message}`);
-          }
-        });
-    } catch (error) {}
+      );
+
+      const data: PasswordChangeResponse = await response.json();
+
+      if (!data.error) {
+        try {
+          await changePassword(currentPassword, newPassword);
+          showSuccessToast(data.message);
+          navigate("/");
+        } catch (error) {
+          showErrorToast((error as Error).message);
+        }
+      } else {
+        showErrorToast(data.message);
+      }
+    } catch (error) {
+      showErrorToast((error as Error).message);
+    }
   };
 
   return (
@@ -67,7 +76,10 @@ export function ChangePassword() {
               id="current"
               type="password"
               value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => 
+                setCurrentPassword(e.target.value)
+              }
+              placeholder="Enter current password"
             />
           </div>
           <div className="space-y-1">
@@ -76,13 +88,20 @@ export function ChangePassword() {
               id="new"
               type="password"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => 
+                setNewPassword(e.target.value)
+              }
+              placeholder="Enter new password"
             />
           </div>
         </CardContent>
         <CardFooter>
-          <Button onClick={handleSavePassword}>
-            {loading ? "processing..." : "Save password"}
+          <Button 
+            onClick={handleSavePassword} 
+            disabled={loading || !currentPassword || !newPassword}
+            className="w-full"
+          >
+            {loading ? "Processing..." : "Save password"}
           </Button>
         </CardFooter>
       </Card>

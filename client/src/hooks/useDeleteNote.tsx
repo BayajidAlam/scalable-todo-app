@@ -29,7 +29,8 @@ const useDeleteNote = ({ email, onSuccess }: UseDeleteNoteParams) => {
         showErrorToast(data.message || 'Failed to delete note');
         return false;
       }
-    } catch (error) {
+    } 
+    catch (error) {
       showErrorToast('Error deleting note');
       return false;
     } finally {

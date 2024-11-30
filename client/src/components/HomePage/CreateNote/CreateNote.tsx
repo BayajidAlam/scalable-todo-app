@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { RiAddLine, RiCloseLine } from "react-icons/ri";
 import { Button } from "../../ui/button";
 import {
@@ -6,7 +6,7 @@ import {
   MdOutlineCheckBoxOutlineBlank,
 } from "react-icons/md";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../../providers/AuthProvider";
+import useAuth from "../../../hooks/useAuth";
 
 interface TodoItem {
   id: string;
@@ -14,8 +14,18 @@ interface TodoItem {
   isCompleted: boolean;
 }
 
-const CreateNoteCard = ({refetch}) => {
-  const { user } = useContext(AuthContext);
+interface CreateNoteCardProps {
+  refetch: () => void;
+}
+
+interface CreateNoteResponse {
+  insertedId?: string;
+  error?: boolean;
+  message?: string;
+}
+
+const CreateNoteCard: React.FC<CreateNoteCardProps> = ({ refetch }) => {
+  const { user } = useAuth();
 
   const [isClick, setIsClick] = useState(false);
   const [title, setTitle] = useState("");
@@ -59,12 +69,9 @@ const CreateNoteCard = ({refetch}) => {
     }
 
     setIsLoading(true);
-    console.log(todos);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/notes?email=${
-          user?.email
-        }&isTodo=${isTodo}`,
+        `${import.meta.env.VITE_API_URL}/notes?email=${user?.email}&isTodo=${isTodo}`,
         {
           method: "POST",
           headers: {
@@ -81,7 +88,7 @@ const CreateNoteCard = ({refetch}) => {
         }
       );
 
-      const data = await response.json();
+      const data: CreateNoteResponse = await response.json();
       if (response.ok && data.insertedId) {
         refetch();
         toast.success("Note created successfully!");
@@ -92,7 +99,7 @@ const CreateNoteCard = ({refetch}) => {
         setTodos([]);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Failed to create note");
     } finally {
       setIsLoading(false);
@@ -124,6 +131,7 @@ const CreateNoteCard = ({refetch}) => {
           {todos.map((todo) => (
             <div key={todo.id} className="flex items-center gap-2">
               <button
+                type="button"
                 onClick={() => handleTodoToggle(todo.id)}
                 className="text-2xl text-gray-500 hover:text-gray-700"
               >
@@ -141,6 +149,7 @@ const CreateNoteCard = ({refetch}) => {
                 className="w-full outline-none border-none rounded-md"
               />
               <button
+                type="button"
                 onClick={() => handleRemoveTodo(todo.id)}
                 className="text-gray-500 hover:text-red-500"
               >
@@ -149,6 +158,7 @@ const CreateNoteCard = ({refetch}) => {
             </div>
           ))}
           <button
+            type="button"
             onClick={handleAddTodo}
             className="flex items-center gap-1 text-gray-500 hover:text-gray-700"
           >
@@ -167,6 +177,7 @@ const CreateNoteCard = ({refetch}) => {
           <div>
             <div className="flex justify-between items-center mt-4">
               <button
+                type="button"
                 onClick={() => setIsTodo(!isTodo)}
                 className={`p-2 rounded-md ${
                   isTodo ? "bg-blue-100 text-blue-600" : "hover:bg-gray-100"

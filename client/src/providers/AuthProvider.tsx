@@ -20,6 +20,10 @@ interface AuthContextProps {
   createUser: (email: string, password: string) => Promise<UserCredential>;
   logInUser: (email: string, password: string) => Promise<UserCredential>;
   logOutUser: () => Promise<void>;
+  changePassword: (
+    currentPassword: string,
+    newPassword: string
+  ) => Promise<void>;
 }
 
 // creating auth

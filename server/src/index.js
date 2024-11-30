@@ -211,7 +211,7 @@ async function run() {
     //********************* notes apis ************************//
     // create a note
     app.post("/notes", async (req, res) => {
-      const { title, content, isArchived, isTrashed,isTodo, todos } = req.body;
+      const { title, content, isArchived, isTrashed, isTodo, todos } = req.body;
       const email = req.query.email;
       const user = await usersCollection.findOne({ email });
 
@@ -221,7 +221,7 @@ async function run() {
           message: "User not found",
         });
       }
-      
+
       const note = {
         title,
         content,
@@ -424,6 +424,43 @@ async function run() {
         _id: new ObjectId(id),
       });
       res.send(note);
+    });
+
+    // Delete note
+    app.delete("/notes/:id", async (req, res) => {
+      try {
+        const { id } = req.params;
+        const email = req.query.email;
+
+        if (!email || !ObjectId.isValid(id)) {
+          return res.status(400).send({
+            error: true,
+            message: "Invalid request parameters",
+          });
+        }
+
+        const result = await notesCollection.deleteOne({
+          _id: new ObjectId(id),
+          email,
+        });
+
+        if (result.deletedCount === 0) {
+          return res.status(404).send({
+            error: true,
+            message: "Note not found",
+          });
+        }
+
+        res.send({
+          success: true,
+          message: "Note deleted successfully",
+        });
+      } catch (error) {
+        res.status(500).send({
+          error: true,
+          message: "Error deleting note",
+        });
+      }
     });
     //********************* notes apis ************************//
   } finally {

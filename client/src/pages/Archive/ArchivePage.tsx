@@ -29,7 +29,7 @@ const ArchivePage = () => {
     setIsModalOpen(true);
   };
 
-  const { deleteNote, isLoading } = useDeleteNote({
+  const { deleteNote } = useDeleteNote({
     email: user?.email,
     onSuccess: refetch,
   });

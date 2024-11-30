@@ -9,31 +9,33 @@ import { updateNoteStatus } from "../../utils/noteAction";
 import { Button } from "../../components/ui/button";
 import useDeleteNote from "../../hooks/useDeleteNote";
 import { AiFillDelete } from "react-icons/ai";
+import { INoteTypes } from "../../Types";
 
 const TrashPage = () => {
   const { isListView } = useAppContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedNote, setSelectedNote] = useState(null);
+  const [selectedNote, setSelectedNote] = useState<INoteTypes | null>(null);
 
   const { user } = useAuth();
+  const userEmail = user?.email as string;
 
   const { notes, refetch } = useFetchNotes({
-    email: user?.email,
+    email: userEmail,
     searchTerm: "",
     isTrashed: true,
     isArchived: false,
   });
 
-  const openModal = (note) => {
+  const openModal = (note: INoteTypes): void => {
     setSelectedNote(note);
     setIsModalOpen(true);
   };
 
-  const handleArchive = async (e: React.MouseEvent, note: any) => {
+  const handleArchive = async (e: React.MouseEvent, note: INoteTypes) => {
     e.stopPropagation();
     const success = await updateNoteStatus({
       noteId: note._id,
-      email: user?.email,
+      email: userEmail,
       action: "archive",
       currentStatus: note.isArchived,
     });
@@ -42,8 +44,8 @@ const TrashPage = () => {
     }
   };
 
-  const { deleteNote, isLoading } = useDeleteNote({
-    email: user?.email,
+  const { deleteNote } = useDeleteNote({
+    email: userEmail,
     onSuccess: refetch,
   });
 
@@ -63,7 +65,7 @@ const TrashPage = () => {
             : "lg:grid-cols-4 md:grid-cols-1 pt-16"
         }`}
       >
-        {notes?.map((note, index) => (
+        {notes?.map((note: INoteTypes, index: number) => (
           <div
             className={`border rounded-md p-2 transition-all duration-500 ease-in-out ${
               isListView ? "w-[600px] mx-auto" : "w-96"
