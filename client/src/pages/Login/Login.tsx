@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginSchema } from "../../schemas/login";
 import {
@@ -14,12 +14,12 @@ import { Form } from "../../components/ui/form";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
-import { AuthContext } from "../../providers/AuthProvider";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
-  // @ts-ignore
-  const { logInUser, loading } = useContext(AuthContext);
+
+  const { logInUser, loading } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();

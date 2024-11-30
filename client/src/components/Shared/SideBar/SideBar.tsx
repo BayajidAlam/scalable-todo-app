@@ -23,13 +23,17 @@ const items = [
 
 const SideBar = ({ isSideBarExpanded }: { isSideBarExpanded: boolean }) => {
   return (
-    <div className={`transition-width duration-300 ${isSideBarExpanded ? "w-64" : "w-16"} bg-white h-full`}>
+    <div
+      className={`transition-width duration-300 ${
+        isSideBarExpanded ? "w-64" : "w-16"
+      } bg-white h-full`}
+    >
       <div className="flex justify-start items-start flex-col w-full">
         {items?.map((item, index) => (
           <NavLink
             to={item.link}
             key={index}
-            className={({ isActive }) =>
+            className={({ isActive }: { isActive: boolean }) =>
               `flex justify-start items-center p-2 w-full hover:bg-indigo-100 hover:rounded-r-3xl ${
                 isActive
                   ? `bg-[#c7d2fe] rounded-r-3xl text-black font-semibold`

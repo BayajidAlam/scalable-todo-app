@@ -7,30 +7,32 @@ import ViewNotesModal from "../../components/Modal/Modal";
 import useFetchNotes from "../../hooks/useNotes";
 import useAuth from "../../hooks/useAuth";
 import { updateNoteStatus } from "../../utils/noteAction";
+import { INoteTypes } from "../../Types";
 
 const Home = () => {
   const { isListView, searchTerm } = useAppContext();
   const { user } = useAuth();
+  const userEmail = user?.email as string;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedNote, setSelectedNote] = useState(null);
+  const [selectedNote, setSelectedNote] = useState<INoteTypes | null>(null);
 
   const { notes, refetch } = useFetchNotes({
-    email: user?.email,
+    email: userEmail,
     searchTerm,
     isTrashed: false,
     isArchived: false,
   });
 
-  const openModal = (note) => {
+  const openModal = (note: INoteTypes) => {
     setSelectedNote(note);
     setIsModalOpen(true);
   };
 
-  const handleArchive = async (e: React.MouseEvent, note: any) => {
+  const handleArchive = async (e: React.MouseEvent, note: INoteTypes) => {
     e.stopPropagation();
     const success = await updateNoteStatus({
       noteId: note._id,
-      email: user?.email,
+      email: userEmail,
       action: "archive",
       currentStatus: note.isArchived,
     });
@@ -39,11 +41,11 @@ const Home = () => {
     }
   };
 
-  const handleTrash = async (e: React.MouseEvent, note: any) => {
+  const handleTrash = async (e: React.MouseEvent, note: INoteTypes) => {
     e.stopPropagation();
     const success = await updateNoteStatus({
       noteId: note._id,
-      email: user?.email,
+      email: userEmail,
       action: "trash",
       currentStatus: note.isTrashed,
     });
@@ -63,7 +65,7 @@ const Home = () => {
             : "lg:grid-cols-4 md:grid-cols-1 pt-16"
         }`}
       >
-        {notes?.map((note, index) => (
+        {notes?.map((note: INoteTypes, index: number) => (
           <div
             className={`border rounded-md p-2 transition-all duration-500 ease-in-out ${
               isListView ? "w-[600px] mx-auto" : "w-96"
@@ -122,7 +124,7 @@ const Home = () => {
         refetch={refetch}
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
-        selectedNote={selectedNote}
+        selectedNote={selectedNote as INoteTypes}
       />
     </div>
   );

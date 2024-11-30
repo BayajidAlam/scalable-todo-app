@@ -1,6 +1,6 @@
+// src/components/Modal/Modal.tsx
 import { useForm } from "react-hook-form";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../providers/AuthProvider";
+import { useEffect, useState } from "react";
 import { Form, FormField, FormItem, FormMessage } from "../ui/form";
 import {
   Dialog,
@@ -19,38 +19,40 @@ import {
 } from "react-icons/md";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import { updateNoteStatus } from "../../utils/noteAction";
+import { INoteTypes, ITodoTypes } from "../../Types";
+import useAuth from "../../hooks/useAuth";
 
-interface ViewNotesProps {
+interface IViewNotesProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedNote: any;
+  selectedNote: INoteTypes;
   refetch: () => void;
 }
 
-const ViewNotesModal = ({
+interface IFormData {
+  title: string;
+  content: string;
+}
+
+const ViewNotesModal: React.FC<IViewNotesProps> = ({
   refetch,
   isOpen,
   setIsOpen,
   selectedNote,
-}: ViewNotesProps) => {
+}) => {
+  const { user } = useAuth();
+  const userEmail = user?.email as string;
 
-  const { user } = useContext(AuthContext);
-  const [todos, setTodos] = useState(selectedNote?.todos || []);
+  const [todos, setTodos] = useState<ITodoTypes[]>(selectedNote?.todos || []);
 
-  const form = useForm({
+  const form = useForm<IFormData>({
     defaultValues: {
       title: selectedNote?.title || "",
       content: selectedNote?.content || "",
     },
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
-  } = form;
+  const { register, handleSubmit, reset, setValue } = form;
 
   useEffect(() => {
     if (selectedNote) {
@@ -83,7 +85,7 @@ const ViewNotesModal = ({
     );
   };
 
-  async function onSubmit(data) {
+  const onSubmit = async (data: IFormData) => {
     try {
       const payload = {
         ...data,
@@ -91,9 +93,9 @@ const ViewNotesModal = ({
       };
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/notes/${selectedNote._id}?email=${
-          user?.email
-        }`,
+        `${import.meta.env.VITE_API_URL}/notes/${
+          selectedNote._id
+        }?email=${userEmail}`,
         {
           method: "PATCH",
           headers: {
@@ -112,18 +114,17 @@ const ViewNotesModal = ({
       }
     } catch (error) {
       console.error(error);
-      showErrorToast(error?.message);
+      showErrorToast((error as Error).message);
     }
-  }
+  };
 
   const handleAddToArchive = async () => {
     const success = await updateNoteStatus({
       noteId: selectedNote._id,
-      email: user?.email,
+      email: userEmail,
       action: "archive",
       currentStatus: selectedNote.isArchived,
     });
-    console.log(success)
     if (success) {
       refetch();
       setIsOpen(false);
@@ -133,7 +134,7 @@ const ViewNotesModal = ({
   const handleAddToTrash = async () => {
     const success = await updateNoteStatus({
       noteId: selectedNote._id,
-      email: user?.email,
+      email: userEmail,
       action: "trash",
       currentStatus: selectedNote.isTrashed,
     });

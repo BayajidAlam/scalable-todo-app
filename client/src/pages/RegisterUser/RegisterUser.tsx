@@ -1,21 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Bounce, toast } from "react-toastify";
 import { Input } from "../../components/ui/input";
 import { registerSchema } from "../../schemas/register";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
 import { Form } from "../../components/ui/form";
 import { Label } from "@radix-ui/react-label";
 import { Button } from "../../components/ui/button";
-import { AuthContext } from "../../providers/AuthProvider";
+import useAuth from "../../hooks/useAuth";
 
 const RegisterUser = () => {
-  // @ts-ignore
-  const { createUser, loading } = useContext(AuthContext);
+  const { createUser, loading } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,7 +43,7 @@ const RegisterUser = () => {
         email: data.email,
         password: data.password,
       };
-      console.log(userInfo,'user info')
+      console.log(userInfo, "user info");
       createUser(data.email, data.password)
         .then((_result: any) => {
           fetch(`${import.meta.env.VITE_API_URL}/users`, {
@@ -161,9 +165,8 @@ const RegisterUser = () => {
               </div>
             </form>
             <p className="my-2 text-center">
-              
               <Link className="font-semibold" to="/login">
-              Already have an account? 
+                Already have an account?
               </Link>
             </p>
           </Form>

@@ -30,6 +30,7 @@ const useDeleteNote = ({ email, onSuccess }: UseDeleteNoteParams) => {
         return false;
       }
     } 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     catch (error) {
       showErrorToast('Error deleting note');
       return false;

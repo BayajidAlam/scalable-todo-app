@@ -9,28 +9,30 @@ import { updateNoteStatus } from "../../utils/noteAction";
 import { Button } from "../../components/ui/button";
 import useDeleteNote from "../../hooks/useDeleteNote";
 import { AiFillDelete } from "react-icons/ai";
+import { INoteTypes } from "../../Types";
 
 const ArchivePage = () => {
   const { isListView } = useAppContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedNote, setSelectedNote] = useState(null);
+  const [selectedNote, setSelectedNote] = useState<INoteTypes | null>(null);
 
   const { user } = useAuth();
+  const userEmail = user?.email as string;
 
   const { notes, refetch } = useFetchNotes({
-    email: user?.email,
+    email: userEmail,
     searchTerm: "",
     isTrashed: false,
     isArchived: true,
   });
 
-  const openModal = (note) => {
+  const openModal = (note: INoteTypes): void => {
     setSelectedNote(note);
     setIsModalOpen(true);
   };
 
   const { deleteNote } = useDeleteNote({
-    email: user?.email,
+    email: userEmail,
     onSuccess: refetch,
   });
 
@@ -39,11 +41,11 @@ const ArchivePage = () => {
     await deleteNote(noteId);
   };
 
-  const handleTrash = async (e: React.MouseEvent, note: any) => {
+  const handleTrash = async (e: React.MouseEvent, note: INoteTypes) => {
     e.stopPropagation();
     const success = await updateNoteStatus({
       noteId: note._id,
-      email: user?.email,
+      email: userEmail,
       action: "trash",
       currentStatus: note.isTrashed,
     });
@@ -63,7 +65,7 @@ const ArchivePage = () => {
             : "lg:grid-cols-4 md:grid-cols-1 pt-16"
         }`}
       >
-        {notes?.map((note, index) => (
+        {notes?.map((note: INoteTypes, index: number) => (
           <div
             className={`border rounded-md p-2 transition-all duration-500 ease-in-out ${
               isListView ? "w-[600px] mx-auto" : "w-96"
@@ -124,7 +126,7 @@ const ArchivePage = () => {
         refetch={refetch}
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
-        selectedNote={selectedNote}
+        selectedNote={selectedNote as INoteTypes}
       />
     </div>
   );

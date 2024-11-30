@@ -126,7 +126,7 @@ const TrashPage = () => {
         refetch={refetch}
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
-        selectedNote={selectedNote}
+        selectedNote={selectedNote as INoteTypes}
       />
     </div>
   );
