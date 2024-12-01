@@ -1,9 +1,18 @@
 # Stage 1: Build the frontend
-FROM node:18 AS builder
+FROM node:18 AS builder 
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+
+# Copy package.json (without yarn.lock) and install dependencies
+COPY package.json ./
+RUN yarn install
+
+# Debugging step: Check Firebase installation
+RUN yarn list --pattern firebase
+
+# Copy all other files into the container
 COPY . .
+
+# Build the frontend application
 RUN yarn build
 
 # Stage 2: Serve the frontend

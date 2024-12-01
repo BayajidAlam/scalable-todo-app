@@ -6,7 +6,7 @@ BACKEND_IMAGE=bayajid23/scalable-todo-server
 FRONTEND_DIR=client
 BACKEND_DIR=server
 
-.PHONY: build-frontend build-backend push-frontend push-backend build-all push-all clean
+.PHONY: build-frontend build-backend push-frontend push-backend build-all push-all clean clear up
 
 # Build the frontend image
 build-frontend:
@@ -33,3 +33,11 @@ push-all: push-frontend push-backend
 # Clean up local Docker images
 clean:
 	docker rmi $(FRONTEND_IMAGE):latest $(BACKEND_IMAGE):latest || true
+
+# Run both containers using docker-compose
+up:
+	docker-compose up -d
+
+# Stop and remove containers, networks, and volumes created by docker-compose
+down:
+	docker-compose down -v

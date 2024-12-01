@@ -6,6 +6,7 @@
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "types": ["firebase"],
     "paths": {
       "@/*": ["./src/*"]
     }
