@@ -3,7 +3,7 @@ import { showErrorToast, showSuccessToast } from "./toast";
 interface UpdateNoteStatusParams {
   noteId: string;
   email: string;
-  action: 'archive' | 'trash';
+  action: "archive" | "trash";
   currentStatus: boolean;
 }
 
@@ -15,14 +15,16 @@ export const updateNoteStatus = async ({
 }: UpdateNoteStatusParams) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/notes/${noteId}?email=${email}`,
+      `${
+        import.meta.env.VITE_APP_BACKEND_ROOt_URL
+      }/notes/${noteId}?email=${email}`,
       {
         method: "PATCH",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          [action === 'archive' ? 'isArchived' : 'isTrashed']: !currentStatus,
+          [action === "archive" ? "isArchived" : "isTrashed"]: !currentStatus,
         }),
       }
     );

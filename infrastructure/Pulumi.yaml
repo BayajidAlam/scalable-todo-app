@@ -1,0 +1,11 @@
+name: scalable-todo
+runtime:
+  name: nodejs
+  options:
+    packagemanager: yarn
+    typescript: false
+description: Scalable todo with AWS infra by Pulumi
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-javascript

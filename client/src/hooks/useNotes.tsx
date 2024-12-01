@@ -7,11 +7,11 @@ interface NotesParams {
   isArchived?: boolean;
 }
 
-const useFetchNotes = ({ 
-  email, 
-  searchTerm, 
-  isTrashed, 
-  isArchived 
+const useFetchNotes = ({
+  email,
+  searchTerm,
+  isTrashed,
+  isArchived,
 }: NotesParams) => {
   const {
     data: notes = [],
@@ -27,10 +27,14 @@ const useFetchNotes = ({
       const params = new URLSearchParams();
       params.append("email", email);
       if (searchTerm) params.append("searchTerm", searchTerm);
-      if (isTrashed !== undefined) params.append("isTrashed", String(isTrashed));
-      if (isArchived !== undefined) params.append("isArchived", String(isArchived));
+      if (isTrashed !== undefined)
+        params.append("isTrashed", String(isTrashed));
+      if (isArchived !== undefined)
+        params.append("isArchived", String(isArchived));
 
-      const url = `${import.meta.env.VITE_API_URL}/notes?${params.toString()}`;
+      const url = `${
+        import.meta.env.VITE_APP_BACKEND_ROOt_URL
+      }/notes?${params.toString()}`;
       console.log("Fetching URL:", url);
 
       try {
@@ -51,7 +55,15 @@ const useFetchNotes = ({
     staleTime: 30000,
   });
 
-  console.log("Query state:", { email, searchTerm, isTrashed, isArchived, isLoading: notesLoading, error, notes });
+  console.log("Query state:", {
+    email,
+    searchTerm,
+    isTrashed,
+    isArchived,
+    isLoading: notesLoading,
+    error,
+    notes,
+  });
 
   return { notes, notesLoading, error, refetch };
 };

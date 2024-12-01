@@ -32,7 +32,9 @@ export function ChangePassword() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/change-password?email=${user?.email}`,
+        `${import.meta.env.VITE_APP_BACKEND_ROOt_URL}/change-password?email=${
+          user?.email
+        }`,
         {
           method: "POST",
           headers: {
@@ -76,7 +78,7 @@ export function ChangePassword() {
               id="current"
               type="password"
               value={currentPassword}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => 
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setCurrentPassword(e.target.value)
               }
               placeholder="Enter current password"
@@ -88,7 +90,7 @@ export function ChangePassword() {
               id="new"
               type="password"
               value={newPassword}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => 
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setNewPassword(e.target.value)
               }
               placeholder="Enter new password"
@@ -96,8 +98,8 @@ export function ChangePassword() {
           </div>
         </CardContent>
         <CardFooter>
-          <Button 
-            onClick={handleSavePassword} 
+          <Button
+            onClick={handleSavePassword}
             disabled={loading || !currentPassword || !newPassword}
             className="w-full"
           >

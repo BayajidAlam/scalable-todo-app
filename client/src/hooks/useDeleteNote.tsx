@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { showSuccessToast, showErrorToast } from '../utils/toast';
+import { useState } from "react";
+import { showSuccessToast, showErrorToast } from "../utils/toast";
 
 interface UseDeleteNoteParams {
   email: string;
@@ -13,26 +13,27 @@ const useDeleteNote = ({ email, onSuccess }: UseDeleteNoteParams) => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/notes/${noteId}?email=${email}`,
+        `${
+          import.meta.env.VITE_APP_BACKEND_ROOt_URL
+        }/notes/${noteId}?email=${email}`,
         {
-          method: 'DELETE',
+          method: "DELETE",
         }
       );
 
       const data = await response.json();
 
       if (data.success) {
-        showSuccessToast('Note deleted successfully');
+        showSuccessToast("Note deleted successfully");
         onSuccess?.();
         return true;
       } else {
-        showErrorToast(data.message || 'Failed to delete note');
+        showErrorToast(data.message || "Failed to delete note");
         return false;
       }
-    } 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    catch (error) {
-      showErrorToast('Error deleting note');
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      showErrorToast("Error deleting note");
       return false;
     } finally {
       setIsLoading(false);
