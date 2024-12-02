@@ -1,0 +1,13 @@
+{
+    "name": "simply-done",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^18",
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@pulumi/aws": "^5.9.2",
+        "@pulumi/awsx": "^2.19.0",
+        "@pulumi/pulumi": "^3.113.0"
+    }
+}
