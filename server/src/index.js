@@ -17,7 +17,6 @@ app.use(
     credentials: true,
   })
 );
-
 // middlewares
 app.use(express.json());
 app.use(cookieParser());
@@ -39,6 +38,7 @@ app.use((req, res, next) => {
 });
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@myclaster-1.wxhqp81.mongodb.net/?retryWrites=true&w=majority&appName=MyClaster-1`;
+
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -72,6 +72,7 @@ const verifyJWT = (req, res, next) => {
 async function run() {
   try {
     await client.connect();
+    console.log("Connected successfully to MongoDB");
     const db = client.db("scalable_todo");
     const usersCollection = db.collection("users");
     const notesCollection = db.collection("notes");
@@ -97,6 +98,7 @@ async function run() {
     // JWT
     app.post("/jwt", (req, res) => {
       const user = req.body;
+      console.log(user, "user");
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "12hr",
       });
@@ -463,6 +465,8 @@ async function run() {
       }
     });
     //********************* notes apis ************************//
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
   } finally {
   }
 }

@@ -71,7 +71,7 @@ const CreateNoteCard: React.FC<CreateNoteCardProps> = ({ refetch }) => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_ROOt_URL}/notes?email=${
+        `${import.meta.env.VITE_APP_BACKEND_ROOT_URL}/notes?email=${
           user?.email
         }&isTodo=${isTodo}`,
         {

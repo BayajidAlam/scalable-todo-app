@@ -93,7 +93,7 @@ const ViewNotesModal: React.FC<IViewNotesProps> = ({
       };
 
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_ROOt_URL}/notes/${
+        `${import.meta.env.VITE_APP_BACKEND_ROOT_URL}/notes/${
           selectedNote._id
         }?email=${userEmail}`,
         {

@@ -14,7 +14,7 @@ const useDeleteNote = ({ email, onSuccess }: UseDeleteNoteParams) => {
     try {
       const response = await fetch(
         `${
-          import.meta.env.VITE_APP_BACKEND_ROOt_URL
+          import.meta.env.VITE_APP_BACKEND_ROOT_URL
         }/notes/${noteId}?email=${email}`,
         {
           method: "DELETE",

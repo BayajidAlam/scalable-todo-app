@@ -33,7 +33,7 @@ const Header = () => {
         >
           <FiMenu size={20} />
         </button>
-        <span className="text-xl font-semibold text-gray-700">Reep</span>
+        <span className="text-xl font-semibold text-gray-700">SimplyDone</span>
       </div>
 
       <div className="flex flex-grow items-center justify-center">

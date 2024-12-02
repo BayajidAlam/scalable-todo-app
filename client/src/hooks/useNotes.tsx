@@ -33,7 +33,7 @@ const useFetchNotes = ({
         params.append("isArchived", String(isArchived));
 
       const url = `${
-        import.meta.env.VITE_APP_BACKEND_ROOt_URL
+        import.meta.env.VITE_APP_BACKEND_ROOT_URL
       }/notes?${params.toString()}`;
       console.log("Fetching URL:", url);
 

@@ -32,7 +32,7 @@ export function ChangePassword() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_ROOt_URL}/change-password?email=${
+        `${import.meta.env.VITE_APP_BACKEND_ROOT_URL}/change-password?email=${
           user?.email
         }`,
         {

@@ -90,7 +90,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (currentUser) {
         axios
-          .post(`${import.meta.env.VITE_APP_BACKEND_ROOt_URL}/jwt`, {
+          .post(`${import.meta.env.VITE_APP_BACKEND_ROOT_URL}/jwt`, {
             email: currentUser?.email,
           })
           .then((data) => {

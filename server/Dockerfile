@@ -9,11 +9,11 @@ FROM node:18 AS builder
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-RUN yarn build || echo "No build step for backend"
+RUN yarn add nodemon --dev || echo "Nodemon already installed" && yarn build || echo "No build step for backend"
 
 # Stage 3: Production runtime
 FROM node:18-alpine
 WORKDIR /app
 COPY --from=builder /app ./
-EXPOSE 3000
+EXPOSE 5000
 CMD ["yarn", "start"]

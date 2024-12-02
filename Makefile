@@ -1,16 +1,18 @@
 # Docker image names
-FRONTEND_IMAGE=bayajid23/scalable-todo-client
-BACKEND_IMAGE=bayajid23/scalable-todo-server
+FRONTEND_IMAGE=bayajid23/simply-done-client
+BACKEND_IMAGE=bayajid23/simply-done-server
 
 # Directories
 FRONTEND_DIR=client
 BACKEND_DIR=server
 
-.PHONY: build-frontend build-backend push-frontend push-backend build-all push-all clean clear up
+.PHONY: build-frontend build-backend push-frontend push-backend build-all push-all clean clear up down logs
 
 # Build the frontend image
 build-frontend:
 	docker build -t $(FRONTEND_IMAGE):latest -f $(FRONTEND_DIR)/Dockerfile $(FRONTEND_DIR)
+
+#--no-cache
 
 # Build the backend image
 build-backend:
@@ -32,7 +34,8 @@ push-all: push-frontend push-backend
 
 # Clean up local Docker images
 clean:
-	docker rmi $(FRONTEND_IMAGE):latest $(BACKEND_IMAGE):latest || true
+	@echo "Cleaning up local Docker images..."
+	docker rmi $(FRONTEND_IMAGE):latest $(BACKEND_IMAGE):latest || echo "No images to remove"
 
 # Run both containers using docker-compose
 up:
@@ -40,4 +43,8 @@ up:
 
 # Stop and remove containers, networks, and volumes created by docker-compose
 down:
-	docker-compose down -v
+	docker-compose down -v --remove-orphans
+
+# Tail logs from docker-compose
+logs:
+	docker-compose logs -f
