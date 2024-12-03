@@ -114,3 +114,80 @@ Before deploying the application, ensure you have the following:
 - **IDE/Editor** (e.g., Visual Studio Code) with necessary extensions (Docker, Pulumi, AWS).
 
 ## Getting Started
+Follow these steps to get the application up and running:
+
+**1. Clone the Repository**
+
+```bash
+  git clone https://github.com/yourusername/scalable-todo-app.git
+  cd scalable-todo-app
+
+```
+
+**2. Install Dependencies**
+- Frontend
+```bash
+  cd client
+  yarn install
+
+```
+
+**3. Set Up Environment Variables**
+#### 1. create a **.env** file in the **/client** directory:
+- Add your Firebase Configuration
+```bash
+VITE_apiKey=  # Your Firebase project's API key
+VITE_authDomain=  # The authentication domain for your Firebase project
+VITE_projectId=  # Your Firebase project ID
+VITE_storageBucket=  # The storage bucket URL for Firebase Storage
+VITE_messagingSenderId=  # The sender ID for Firebase Cloud Messaging (FCM)
+VITE_appId=  # The unique app ID for your Firebase app
+VITE_measurementId=  # The measurement ID used for Firebase Analytics
+
+# Backend URL
+VITE_APP_BACKEND_ROOT_URL=
+
+```
+
+#### 2. **Backend** create a **.env** file in the **/server** directory:
+- Add MongoDB User and password
+
+```bash
+DB_USER=jobBoxUser
+DB_PASS=BpYbsDKcovw6CmcS
+
+ACCESS_TOKEN_SECRET=
+ACCESS_TOKEN_EXPIRES_IN=
+
+```
+### 3. reate a **.env** file in the **root** directory:
+
+- Add MongoDB User and password
+
+```bash
+DB_USER=jobBoxUser
+DB_PASS=BpYbsDKcovw6CmcS
+
+ACCESS_TOKEN_SECRET=
+ACCESS_TOKEN_EXPIRES_IN=
+
+```
+
+**4. Build Docker Containers**
+
+To build the **client** and **server** run following command
+```bash
+make build-all
+```
+**5. Push to Dockerhub**
+
+```bash
+make push-all
+```
+
+**6. Deploy the Infrastructure**
+
+Run container
+```bash
+pulumi up
+```
