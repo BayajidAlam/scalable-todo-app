@@ -24,7 +24,10 @@ The containers will then be deployed to multiple AWS EC2 instances, providing fa
 
 ## Architecture Overview
 
-![image](https://github.com/user-attachments/assets/0c9b5ca5-30fb-4807-bbb9-69abcb68fe04)
+![image](https://github.com/user-attachments/assets/b4f68403-313a-415b-b6c6-3ba8b2535dde)
+
+
+
 
 The application consists of two main components:
 1. **Frontend**: A React.js application that interacts with the backend API to manage To-Do tasks.
