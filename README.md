@@ -1,4 +1,4 @@
-# Highly Available, Containerized To-Do Application
+## SimplyDone: A Highly Available, Containerized To-Do Application
 
 ## Table of Contents
 
@@ -23,6 +23,9 @@ The containers will then be deployed to multiple AWS EC2 instances, providing fa
 
 
 ## Architecture Overview
+
+![image](https://github.com/user-attachments/assets/0c9b5ca5-30fb-4807-bbb9-69abcb68fe04)
+
 The application consists of two main components:
 1. **Frontend**: A React.js application that interacts with the backend API to manage To-Do tasks.
 2. **Backend**: A Node.js + Express application that exposes a REST API for managing tasks, using MongoDB as the database.
@@ -46,7 +49,6 @@ The architecture includes:
 
 
 ## Technology Stack
-### Tech Stack
 
 - **Frontend**: 
     React , Tailwidn, Shadcnui, Firebase, React-hook-form, Sweetalert, Zod
@@ -71,7 +73,26 @@ The architecture includes:
 
 ## Folder Structure
 
+## Repository Folder Structure
 
+
+- `/client` : **Frontend**
+  - `/public`: Static files and assets.
+  - `/src`: Core application code.
+  - `Dockerfile`: Frontend Dockerfile
+  - `.env`: Frontend environment variables
+  - `package.json`
+-  `/server`: **Backend**
+    - `/src`: Backend source code.
+   - `Dockerfile`: Frontend Dockerfile
+    - `.env`: Backend environment variables
+   - `package.json`
+
+- `/infrastructure`: **Infrastructure** 
+    - `index.ts`: Pulumi IaC files for managing AWS resources includes networking, compute, and scaling setup.
+- `docker-compose.yml`: Frontend Dockerfile
+- `.env`: Backend environment variables
+- `Makefile`: Backend environment variables
 
 ## Prerequisites
 
