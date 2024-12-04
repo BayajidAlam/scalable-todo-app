@@ -167,7 +167,7 @@ ACCESS_TOKEN_SECRET=
 ACCESS_TOKEN_EXPIRES_IN=
 
 ```
-### 3. ** create a **.env** file in the **root** directory:
+### 3. create a **.env** file in the **root** directory:
 
 - Add MongoDB User and password
 
@@ -204,6 +204,7 @@ http://<EC2_INSTANCE_PUBLIC_IP>:5173
 ```
 
 ## Api Documentation
+This section provides a detailed description of all the APIs, including their request payloads, query parameters, URL parameters, and responses, along with example usage for each endpoint in the application.
 
 ### Root url(Local environment)
 ```
