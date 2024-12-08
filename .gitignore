@@ -1,4 +1,7 @@
-# Logs
+# Ignore all .env files, including those in subdirectories
+**/.env
+
+# Existing ignores
 logs
 *.log
 npm-debug.log*
@@ -23,3 +26,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+

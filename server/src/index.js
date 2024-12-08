@@ -13,10 +13,11 @@ const cookieParser = require("cookie-parser");
 // Configure CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     credentials: true,
   })
 );
+
 // middlewares
 app.use(express.json());
 app.use(cookieParser());
@@ -37,7 +38,8 @@ app.use((req, res, next) => {
   next();
 });
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@myclaster-1.wxhqp81.mongodb.net/?retryWrites=true&w=majority&appName=MyClaster-1`;
+// const uri = `mongodb://localhost:27017/scalable_todo`;
+const uri = "mongodb://user:example@10.10.5.10:27017/todoApp";
 
 
 const client = new MongoClient(uri, {
