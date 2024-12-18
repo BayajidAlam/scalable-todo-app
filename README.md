@@ -198,10 +198,18 @@ Run container
 pulumi up
 ```
 
+You will see infra is creating...
+![Screenshot from 2024-12-18 13-30-13](https://github.com/user-attachments/assets/cb889077-dc9b-4dfd-8e24-400dc7ffbb30)
+
+And when creation is done
+![Screenshot from 2024-12-18 13-30-20](https://github.com/user-attachments/assets/335ca9cf-03d6-4747-97ef-370b980e7efb)
+
+
 Now open browser and write 
 ``` bash
 http://<EC2_INSTANCE_PUBLIC_IP>:5173
 ```
+![Screenshot from 2024-12-18 14-37-17](https://github.com/user-attachments/assets/7fbcd41c-d11f-4a40-a7c7-144c64c31877)
 
 ## Api Documentation
 This section provides a detailed description of all the APIs, including their request payloads, query parameters, URL parameters, and responses, along with example usage for each endpoint in the application.
